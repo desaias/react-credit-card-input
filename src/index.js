@@ -242,6 +242,10 @@ class CreditCardInput extends Component<Props, State> {
     }
 
     this.setFieldValid();
+
+    cardNumberInputProps.onChange && cardNumberInputProps.onChange(e);
+    onChange && onChange(e);
+
     if (cardTypeLengths) {
       const lastCardTypeLength = cardTypeLengths[cardTypeLengths.length - 1];
       for (let length of cardTypeLengths) {
@@ -260,9 +264,6 @@ class CreditCardInput extends Component<Props, State> {
         }
       }
     }
-
-    cardNumberInputProps.onChange && cardNumberInputProps.onChange(e);
-    onChange && onChange(e);
   };
 
   handleCardNumberKeyPress = (e: any) => {
@@ -297,12 +298,19 @@ class CreditCardInput extends Component<Props, State> {
   handleCardExpiryChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const { customTextLabels, enableCVCInput } = this.props;
+    const {
+      cardExpiryInputProps,
+      customTextLabels,
+      enableCVCInput
+    } = this.props;
 
     this.cardExpiryField.value = formatExpiry(e);
     const value = this.cardExpiryField.value.split(' / ').join('/');
 
     this.setFieldValid();
+
+    cardExpiryInputProps.onChange && cardExpiryInputProps.onChange(e);
+    onChange && onChange(e);
 
     const expiryError = isExpiryInvalid(value, customTextLabels.expiryError);
     if (value.length > 4) {
@@ -314,10 +322,6 @@ class CreditCardInput extends Component<Props, State> {
         }
       }
     }
-
-    const { cardExpiryInputProps } = this.props;
-    cardExpiryInputProps.onChange && cardExpiryInputProps.onChange(e);
-    onChange && onChange(e);
   };
 
   handleCardExpiryKeyPress = (e: any) => {
@@ -354,7 +358,7 @@ class CreditCardInput extends Component<Props, State> {
   handleCardCVCChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const { customTextLabels } = this.props;
+    const { cardCVCInputProps, customTextLabels } = this.props;
     const value = formatCvc(e.target.value);
     this.cvcField.value = value;
     const CVC = value;
@@ -376,7 +380,6 @@ class CreditCardInput extends Component<Props, State> {
       this.zipField.focus();
     }
 
-    const { cardCVCInputProps } = this.props;
     cardCVCInputProps.onChange && cardCVCInputProps.onChange(e);
     onChange && onChange(e);
   };

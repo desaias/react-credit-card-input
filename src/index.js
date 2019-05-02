@@ -151,6 +151,7 @@ class CreditCardInput extends Component<Props, State> {
     containerStyle: {},
     dangerTextClassName: '',
     dangerTextStyle: {},
+    enableCVCInput: true,
     enableZipInput: false,
     fieldClassName: '',
     fieldStyle: {},
@@ -296,7 +297,7 @@ class CreditCardInput extends Component<Props, State> {
   handleCardExpiryChange = (
     { onChange }: { onChange?: ?Function } = { onChange: null }
   ) => (e: SyntheticInputEvent<*>) => {
-    const { customTextLabels } = this.props;
+    const { customTextLabels, enableCVCInput } = this.props;
 
     this.cardExpiryField.value = formatExpiry(e);
     const value = this.cardExpiryField.value.split(' / ').join('/');
@@ -308,7 +309,9 @@ class CreditCardInput extends Component<Props, State> {
       if (expiryError) {
         this.setFieldInvalid(expiryError, 'cardExpiry');
       } else {
-        this.cvcField.focus();
+        if (enableCVCInput) {
+          this.cvcField.focus();
+        }
       }
     }
 
@@ -487,6 +490,7 @@ class CreditCardInput extends Component<Props, State> {
       containerStyle,
       dangerTextClassName,
       dangerTextStyle,
+      enableCVCInput,
       enableZipInput,
       fieldClassName,
       fieldStyle,
@@ -544,7 +548,7 @@ class CreditCardInput extends Component<Props, State> {
             inputStyled={inputStyle}
             isActive
             data-max="MM / YY 9"
-            translateX={enableZipInput && !showZip}
+            translateX={enableCVCInput && enableZipInput && !showZip}
           >
             {cardExpiryInputRenderer({
               inputComponent,
@@ -569,9 +573,10 @@ class CreditCardInput extends Component<Props, State> {
               }
             })}
           </InputWrapper>
+
           <InputWrapper
             inputStyled={inputStyle}
-            isActive
+            isActive={enableCVCInput}
             data-max="99999"
             translateX={enableZipInput && !showZip}
           >
@@ -598,6 +603,7 @@ class CreditCardInput extends Component<Props, State> {
               }
             })}
           </InputWrapper>
+
           <InputWrapper
             data-max="999999"
             isActive={enableZipInput}

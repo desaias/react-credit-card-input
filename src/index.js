@@ -70,6 +70,10 @@ const InputWrapper = styled.label`
     }
   }
 
+  & #card-expiry {
+    text-align: right;
+  }
+
   & .zip-input {
     display: ${props => (props.isZipActive ? 'flex' : 'none')};
   }
